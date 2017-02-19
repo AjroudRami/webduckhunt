@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Game</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body style="margin: 0;">
+    <div id="container" width="100%" height="100%">
+    </div>
+    
+<!--
+    <audio loop autoplay>
+        <source src="15 sans..ogg" type="audio/ogg">
+        <source src="15 sans..mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+-->
+
+<script>
+    var w = $(window).width();
+    var h = $(window).height();
+    $("body").html('<canvas id="myCanvas" width="' + w +'" height="' + h +'"></canvas>');
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+        
+    var bg = new Image();
+    var duckImg = new Array(10);
+    var duckImgBuffer = new Array(10);
+    var duckSize = new Array(10);
+    var duckX = new Array(10);
+    var duckY = new Array(10);
+    var duckAlive = new Array(10);
+    var duckShot = new Array(10);
+    var duckShotCount = new Array(10);
+    var duckDir = new Array(10);
+    var duckFrame = new Array(10);
+    var duckFrameCount = new Array(10);
+    var duckNextFrame = new Array(10);
+    var duckSpeed = new Array(10);
+    var duckSlope = new Array(10);
+    var spawnInterval = 2000;
+    var frameRefreshRate = 20;
+    var score = 0;
+    var gameOver = false;
+    
+    for (var i = 0; i < 10; i++){
+        duckImg[i] = new Image();
+        duckImgBuffer[i] = new Image();
+        duckSize[i] = 100;
+        duckX[i] = 0;
+        duckY[i] = h;
+        duckAlive[i] = false;
+        duckShot[i] = false;
+        duckShotCount[i] = 0;
+        var random = Math.floor((Math.random() * 2));
+        if (random == 0){
+            duckDir[i] = "Left";
+        } else {
+            duckDir[i] = "Right";
+        }
+        random = Math.floor(Math.random() * (w / 5 * 3));
+        if (duckDir[i] == "Left"){
+            duckX[i] = Math.floor(random + w / 5 * 3);
+        } else if (duckDir[i] = "Right"){
+            duckX[i] = random;
+        }
+        duckFrame[i] = 0;
+        duckFrameCount[i] = 0;
+        duckNextFrame[i] = 1;
+        var random = Math.floor((Math.random() * 10) + 3);
+        duckSpeed[i] = random;
+        var random = Math.floor(Math.random() * 5) + 5;
+        duckSlope[i] = random / 10;
+    }
+    
+    var targetImg = new Image();
+    var fg = new Image();
+    var nextDuck = 0;
+    var targetSize = 100;
+    var targetX = Math.floor(w / 2);
+    var targetY = Math.floor(h / 2);
+    var firstLoop = true;
+    refreshFrame();
+    setInterval(refreshFrame, frameRefreshRate);
+
+    setInterval(function(){
+        if (nextDuck >= 0 && nextDuck < 10){
+            duckAlive[nextDuck] = true;
+            nextDuck++;
+        } else {
+            gameOver = true;
+            nextDuck++;
+        }
+    }, spawnInterval);
+
+    function refreshFrame(){
+
+        if (firstLoop) {
+                bg.onload = function(){
+                    ctx.drawImage(bg, 0, 0, w, h);
+                    for (var i = 0; i < 10; i++) {
+                        duckImgBuffer[i].src = "img/Duck_Flying_" + duckDir[i] + "_" + duckNextFrame[i] + ".png";
+                        if (duckFrameCount == 0){
+                            duckImg[i].src = duckImgBuffer.src;
+                        } else {
+                            duckImg[i].src = "img/Duck_Flying_" + duckDir[i] + "_" + duckFrame[i] + ".png";
+                        }
+                    }
+                }
+
+                for (var i = 0; i < 10; i++){
+                    if (duckAlive[i]){
+                        if (duckImg[i].complete) {
+                            ctx.drawImage(duckImg[i], duckX[i] - duckSize[i] / 2, duckY[i] - duckSize[i] / 2, duckSize[i], duckSize[i]);
+                        }
+                    } else {
+                    duckImg[i].src = "img/Duck_Shot.png";
+                    ctx.drawImage(duckImg[i], duckX[i] - duckSize[i] / 2, duckY[i] - duckSize[i] / 2, duckSize[i], duckSize[i]);
+                    }
+                    if (i == 9){
+                        fg.src = "img/Foreground.png";
+                    }
+                }
+
+                fg.onload = function(){
+                    ctx.drawImage(fg, 0, 0, w, h);
+                    if (nextDuck < 13){
+                        ctx.font="20px Georgia";
+                        ctx.textAlign = "left";
+                        ctx.fillStyle = 'black';
+                        ctx.fillText("SCORE", 30, 30);
+                        ctx.fillText(score + "/10", 30, 60);
+                        targetImg.src = "img/Target.png";
+                    }
+                }
+
+                targetImg.onload = function(){
+                    if (targetX < 0){
+                        targetX = 0;
+                    }
+
+                    if (targetX > w){
+                        targetX = w;
+                    }
+
+                    if (targetY < 0){
+                        targetY = 0;
+                    }
+
+                    if (targetY > h){
+                        targetY = h;
+                    }
+
+                    ctx.drawImage(targetImg, targetX - targetSize / 2, targetY - targetSize / 2, targetSize, targetSize);
+
+                };
+
+                bg.src = "img/Background.png";
+
+        } else {
+            ctx.drawImage(bg, 0, 0, w, h);
+            for (var i = 0; i < 10; i++){
+                if (duckAlive[i]) {
+                    duckImgBuffer[i].src = "img/Duck_Flying_" + duckDir[i] + "_" + duckNextFrame[i] + ".png";
+                        if (duckFrameCount == 0){
+                            duckImg[i].src = duckImgBuffer.src;
+                        } else {
+                            duckImg[i].src = "img/Duck_Flying_" + duckDir[i] + "_" + duckFrame[i] + ".png";
+                        }
+                    ctx.drawImage(duckImg[i], duckX[i] - duckSize[i] / 2, duckY[i] - duckSize[i] / 2, duckSize[i], duckSize[i]);
+                } else {
+                    duckImg[i].src = "img/Duck_Shot.png";
+                    ctx.drawImage(duckImg[i], duckX[i] - duckSize[i] / 2, duckY[i] - duckSize[i] / 2, duckSize[i], duckSize[i]);
+                }
+            }
+
+            if (targetX < 0){
+                targetX = 0;
+            }
+
+            if (targetX > w){
+                targetX = w;
+            }
+
+            if (targetY < 0){
+                targetY = 0;
+            }
+
+            if (targetY > h){
+                targetY = h;
+            }
+
+            ctx.drawImage(fg, 0, 0, w, h);
+            ctx.drawImage(targetImg, targetX - targetSize / 2, targetY - targetSize / 2, targetSize, targetSize);
+
+            if (nextDuck < 13){
+                ctx.font="20px Georgia";
+                ctx.textAlign = "left";
+                ctx.fillStyle = 'black';
+                ctx.fillText("SCORE", 30, 40);
+                ctx.fillText(score + "/10", 30, 70);
+            } else if (nextDuck >= 13) {
+                targetImg.src = "";
+                ctx.font="20px Georgia";
+                ctx.textAlign = "center";
+                ctx.fillStyle = 'black';
+                ctx.fillText("GAME OVER!!", w / 2, h / 2);
+                ctx.fillText("SCORE: " + score + "/10", w / 2, h / 2 + 30);
+                ctx.fillText("SHOOT TO RESET", w / 2, h / 2 + 60);
+            }
+        }
+
+        for (var i = 0; i < 10; i++){
+            if (duckAlive[i] && duckDir[i] == "Left"){
+                duckX[i] -= duckSpeed[i];
+                duckY[i] -= duckSpeed[i] * duckSlope[i];
+            } else if (duckAlive[i] && duckDir[i] == "Right"){
+                duckX[i] += duckSpeed[i];
+                duckY[i] -= duckSpeed[i] * duckSlope[i];
+            } else if (!duckAlive[i] && duckShot[i]){
+                if (duckShotCount[i] < 15){
+                    duckShotCount[i]++;
+                } else {
+                    duckY[i] += 15;
+                }
+            }
+            switch (duckFrame[i]) {
+                case 0:
+                    if (duckFrameCount[i] < 7) {
+                        duckFrameCount[i]++;
+                    } else {
+                        duckFrame[i] = 1;
+                        duckFrameCount[i] = 0;
+                        duckNextFrame[i] = 2;
+                    }
+                    break;
+                case 1:
+                    if (duckFrameCount[i] < 7) {
+                        duckFrameCount[i]++;
+                    } else {
+                        duckFrame[i] = 2;
+                        duckFrameCount[i] = 0;
+                        duckNextFrame[i] = 3;
+                    }
+                    break;
+                case 2:
+                    if (duckFrameCount[i] < 7) {
+                        duckFrameCount[i]++;
+                    } else {
+                        duckFrame[i] = 3;
+                        duckFrameCount[i] = 0;
+                        duckNextFrame[i] = 0;
+                    }
+                    break;
+                case 3:
+                    if (duckFrameCount[i] < 7) {
+                        duckFrameCount[i]++;
+                    } else {
+                        duckFrame[i] = 0;
+                        duckFrameCount[i] = 0;
+                        duckNextFrame[i] = 1;
+                    }
+                    break;
+            }
+        }
+
+
+
+        if (firstLoop) {
+            firstLoop = false;
+        }
+
+    }
+
+    document.onkeydown = checkKey;
+
+    function checkKey(e) {
+
+        e = e || window.event;
+
+        if (e.keyCode == '38') {
+            // up arrow
+            targetY -= 50;
+        }
+
+        if (e.keyCode == '40') {
+            // down arrow
+            targetY += 50;
+        }
+
+        if (e.keyCode == '37') {
+           // left arrow
+            targetX -= 50;
+        }
+
+        if (e.keyCode == '39') {
+           // right arrow
+            targetX += 50;
+        }
+
+        if (e.keyCode == '32') {
+            for (var i = 0; i < 10; i++){
+                if (duckAlive[i] && targetX >= duckX[i] - duckSize[i] / 2 && targetX <= duckX[i] + duckSize[i] / 2 && targetY >= duckY[i] - duckSize[i] / 2 && targetY <= duckY[i] + duckSize[i] / 2) {
+                    duckAlive[i] = false;
+                    duckShot[i] = true;
+                    score++;
+                }
+            }
+
+            if (nextDuck >= 13){
+                location.reload();
+            }
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

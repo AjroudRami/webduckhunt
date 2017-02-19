@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shooter Game</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="stylesheets/home.css">
+    <script src="javascripts/home.js"></script>
+</head>
+<body>
+    <div id="outer">
+        <div id="mid">
+            <div id="inner" class="col-xs-12 col-md-6">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h1 class="panel-title">
+                                    Shooter
+                            </h1>
+                        </div>
+                        </a>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="page-header" style="border:0;">
+                                <h2>Presentation
+                                    <br>
+                                    <small>This application is a realtime interactive browser game called “Duck Hunt IRL”. This game is a shooter game ported from a retro game named Duck Hunt where ducks fly out from the bushes and the player as a huntsman shoots them off the air. The application is written in HTML5, CSS and JavaScript with the aid of JQuery, AJAX, Bootstrap, Gyro.js and so forth.
+                                    </small>
+                                    <br>
+                                    Your device is
+                                    <br>
+                                    <small id="device"></small>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h1 class="panel-title">
+                                        Play!
+                                </h1>
+                            </div>
+                        </a>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="page-header" style="border:0;">
+                                <h2>Game Instructions:
+                                    <br>
+                                    <small><br>Click on Play! then To the game on both your mobile device and computer. If a mobile device is used as the display end, instead tap on the display end, Spectator, then Watch!.
+                                        <br>On the display end, look for a numerical token and key the token into the Enter token text field on your mobile device.
+                                        <br>Place your mobile device perpendicular to your display end device, with the top of your mobile device pointing at it, on a flat surface.
+                                        <br>Do not move the device and keep it as is. Then tap Let’s go! on your mobile device and the game should start. This step calibrates the gyroscopic data of your mobile device.
+                                        <br>Pick up and point the top of your mobile device at your display end device’s screen to aim and tap the Press to shoot button on your mobile device to shoot.
+                                    </small>
+                                </h2>
+                            </div>
+                            <button id="playBtn" type="button" class="btn btn-primary" style="margin:10px;">To the game</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                            <h1 class="panel-title">
+                                    Spectator
+                            </h1>
+                        </div>
+                        </a>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="page-header" style="border:0;">
+                                <h2>Spectator instructions:
+                                    <br>
+                                    <small>Use this if you want to play on to mobiles. Please put your mobile on landscape mode before clicking on watch.
+                                    </small>
+                                </h2>
+                            </div>
+                            <button id="watchBtn" type="button" class="btn btn-primary" style="margin:10px;">Watch!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

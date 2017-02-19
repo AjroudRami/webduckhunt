@@ -1,0 +1,78 @@
+#outer{
+    width: 100%;
+    padding: 0;
+    display: table;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    background: #322a65; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#aaa6f0, #59577f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#aaa6f0, #59577f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#aaa6f0, #59577f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#aaa6f0, #59577f); /* Standard syntax */
+}
+
+#mid{
+    padding: 0;
+    vertical-align: middle;
+    display: table-cell;
+    margin: 0;
+}
+
+#inner{
+    background-color: darkgray;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    float: none;
+    border: 5px black solid;
+    border-radius: 10px;
+}
+
+.panel-group .panel-heading{
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#f5f5f5),to(#e8e8e8));
+}
+
+.panel-group {
+    margin-bottom: 0px;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+.panel-title{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 3em;
+}
+.btn{
+    padding: 2%;
+    font-size: 2em;
+}
+@media screen and (max-width: 980px){
+    .panel-title {
+        font-size: 5em;
+    }
+    h2{
+        font-size: 4em;
+    }
+    .btn{
+        padding: 2%;
+        font-size: 3em;
+    }
+    .form-control{
+        font-size: 3em;
+        height: 100px;
+    }
+}
+
+#body{
+    background: #322a65; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#aaa6f0, #59577f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#aaa6f0, #59577f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#aaa6f0, #59577f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#aaa6f0, #59577f); /* Standard syntax */
+}

@@ -1,0 +1,153 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var request = require('request');
+var debug = require('debug')('untitled:server');
+var http = require('http');
+var url = require('url');
+var WebSocketServer = require('ws').Server;
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+var wss = new WebSocketServer({server:server});
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(3000, '0.0.0.0', function() {
+  console.log('Listening to port:  ' + 3000);
+});
+server.on('error', onError);
+//server.on('listening', onListening);
+
+var clients = [];
+
+wss.on('connection', function connection(ws) {
+  var location = url.parse(ws.upgradeReq.url, true);
+  // you might use location.query.access_token to authenticate or share sessions
+  // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+  var token = location.query.access_token;
+  var device = location.query.device_id;
+  console.log('connexion! token: %s device: %s',token, device);
+  var client = {socket:ws,
+                token: token,
+                device:device};
+  clients.push(client);
+  bind(client);
+});
+
+
+function bind(client){
+  clients.forEach( function(cl){
+    //if device share token but different id
+    if(client.token == cl.token && client.device != cl.device){
+      pairBind(cl, client);
+      pairBind(client, cl);
+    }
+  });
+}
+
+var pairBind = function(client1, client2){
+  //redirect message to the other device
+  client1.socket.on('message', function(message){
+    console.log('received message from %s sent to %s', client1.device, client2.device);
+    client2.socket.send(message);
+  });
+  //On close, close the other endpoint
+  client1.socket.on('close', function(){
+    delTokenRequest(client1.token);
+    var index = clients.indexOf(client2);
+    if (index > -1) {
+      clients.splice(index, 1);
+    }
+    client2.socket.close();
+    console.warn('client left: token: %s device: %s', client1.token, client1.device);
+  });
+};
+
+var delTokenRequest = function(token){
+  var url = 'http://localhost:3000/token?function=del&token=' + token;
+  console.log(url);
+  request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          console.log('ahah'); // Show the HTML for the Google homepage.
+        }else{
+          console.log('error delenting token ' + body);
+        }
+      }
+  );
+};
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+      ? 'Pipe ' + port
+      : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

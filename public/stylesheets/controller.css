@@ -1,0 +1,43 @@
+
+#trigger{
+    font-size:4em;
+    background: #322a65; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(red, darkred); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(red, darkred); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(red, darkred); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(red, darkred); /* Standard syntax */
+    color:white;
+    text-align: center;
+}
+#status, #pause, #score{
+    font-size:4em;
+    text-align: center;
+    color:white;
+    padding-top: 8%;
+    padding-bottom: 5%;
+    margin-bottom: -10%;
+}
+#status, #pause, #score, #trigger{
+    font-family: arialt;
+}
+
+
+#score{
+    background: skyblue;
+}
+
+
+#pause{
+    background: #322a65; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#aaa6f0, #59577f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#aaa6f0, #59577f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#aaa6f0, #59577f); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#aaa6f0, #59577f); /* Standard syntax */
+}
+.connected{
+    background-color: lime;
+}
+
+.no-connexion{
+    background-color: red;
+}
